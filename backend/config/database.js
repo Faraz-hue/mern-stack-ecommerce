@@ -5,10 +5,6 @@ const connectDatabase = () => {
         .then((data) => {
             console.log(`MongoDB connected with server data: ${data.connection.host}`)
         })
-        .catch((err) => {
-            console.log(err);
-
-        })
 }
 
 module.exports = connectDatabase
