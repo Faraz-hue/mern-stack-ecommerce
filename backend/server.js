@@ -1,5 +1,10 @@
-const app = require("./app")
+
 const dotenv = require("dotenv")
+// Config
+dotenv.config({ path: `backend/config/config.env` })
+
+const app = require("./app")
+
 const connectDatabase = require("./config/database")
 
 
@@ -11,8 +16,6 @@ process.on("uncaughtException", (err) => {
     process.exit(1)
 })
 
-// Config
-dotenv.config({ path: `backend/config/config.env` })
 
 // Connecting to database
 connectDatabase()

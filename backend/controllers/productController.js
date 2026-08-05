@@ -4,8 +4,10 @@ const catchAsyncErrors = require("../middlewares/catchAsyncErrors")
 const ApiFeatures = require("../utils/appFeature")
 
 
-// CREATE Products -- Admin
+//1. CREATE Products -- Admin
 exports.createProduct = catchAsyncErrors(async (req, res) => {
+    req.body.user = req.user.id
+
     const product = await Product.create(req.body)
 
     res.status(201).json({
@@ -15,7 +17,7 @@ exports.createProduct = catchAsyncErrors(async (req, res) => {
 })
 
 
-// GET ALL Product
+//2. READ Products
 exports.getAllProducts = catchAsyncErrors(async (req, res) => {
     const resultPerPage = 5
     const productCount = await Product.countDocuments()
@@ -32,23 +34,7 @@ exports.getAllProducts = catchAsyncErrors(async (req, res) => {
     })
 })
 
-
-// Get Product Details
-exports.getProductDetails = catchAsyncErrors(async (req, res, next) => {
-    const product = await Product.findById(req.params.id)
-    if (!product) {
-        return next(new ErrorHandler("Product not found", 404))
-    }
-
-    res.status(200).json({
-        success: true,
-        product,
-
-    })
-
-})
-
-// UPDATE Product -- Admin
+//3. UPDATE Product -- Admin
 exports.updateProducts = catchAsyncErrors(async (req, res, next) => {
     let product = await Product.findById(req.params.id)
 
@@ -67,6 +53,8 @@ exports.updateProducts = catchAsyncErrors(async (req, res, next) => {
     })
 })
 
+
+//4. DELETE Product
 exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
     const product = await Product.findById(req.params.id)
     if (!product) {
@@ -78,3 +66,20 @@ exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
         message: "Product Deleted successfully"
     })
 })
+
+
+//5. Get Product Details
+exports.getProductDetails = catchAsyncErrors(async (req, res, next) => {
+    const product = await Product.findById(req.params.id)
+    if (!product) {
+        return next(new ErrorHandler("Product not found", 404))
+    }
+
+    res.status(200).json({
+        success: true,
+        product,
+
+    })
+
+})
+
